@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <QWindow.hpp>
 #include <string.h>
+#include <iostream>
 
 QEvent* QEvent::instance = nullptr;
 
@@ -22,19 +23,23 @@ void QEvent::init() {
 	memset(keyState, false, KEYBOARD_KEYS_COUNT*sizeof(bool));
 	memset(mouseState, false, MOUSE_KEYS_COUNT*sizeof(bool));
 
-	flushMouse();
-	flushKeyboard();
-
 	glfwSetKeyCallback(glfwWindow, &QEvent::keyboardCallback);
 	glfwSetMouseButtonCallback(glfwWindow, &QEvent::mouseButtonCallback);
 	glfwSetCursorPosCallback(glfwWindow, &QEvent::mouseMoveCallback);
 
+	flushMouse();
+	flushKeyboard();
 	mouseLocked = false;
 }
 
 void QEvent::keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	QEvent* instance = QEvent::getInstance();
-	instance->keyState[scancode] = (action == GLFW_PRESS);
+	if (action == GLFW_PRESS) {
+		instance->keyState[scancode] = true;
+	}
+	else if (action == GLFW_RELEASE) {
+		instance->keyState[scancode] = false;
+	}
 
 	if (action == GLFW_PRESS) {
 		instance->keyHits[scancode]++;
@@ -56,7 +61,6 @@ void QEvent::mouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
 	instance->mouseDeltaX += xpos - instance->mouseX;
 	instance->mouseDeltaY += ypos - instance->mouseY;
 
-	
 	if(instance->mouseLocked) {
 		int width, height;
 		glfwGetWindowSize(window, &width, &height);
@@ -102,6 +106,14 @@ void QEvent::lockMouse() {
 	GLFWwindow* window = QWindow::getInstance()->getGLFWwindow();
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+
+	glfwSetCursorPos(window, width / 2, height / 2);
+	mouseX = width / 2;
+	mouseY = height / 2;
+	flushMouse();
 	mouseLocked = true;
 }
 

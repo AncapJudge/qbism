@@ -58,3 +58,13 @@ QShaderProgram* QShaderProgram::load(const char* vshFile, const char* fshFile) {
 void QShaderProgram::use() {
 	glUseProgram(id);
 }
+
+void QShaderProgram::uniformMatrix(const char* uniformName, void* matrix) {
+	GLuint uniformId;
+	if (!uniformIds[uniformName]) {
+		uniformId = glGetUniformLocation(id, uniformName);
+		uniformIds.insert(std::pair<const char*, unsigned int>(uniformName, 10));
+	}
+	uniformId = uniformIds[uniformName];
+	glUniformMatrix4fv(uniformId, 1, GL_FALSE, (GLfloat*)matrix);
+}
