@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <iostream>
 #include <QShaderProgram.hpp>
+#include <QTexture.hpp>
 #include <QEvent.hpp>
 
 QCube::QCube() {
@@ -69,14 +70,20 @@ QCube::QCube() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
-	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 }
 
 void QCube::draw() {
 	shaderProgram->use();
+	
+	if (texture != nullptr) {
+		glBindTexture(GL_TEXTURE_2D, texture->getId());
+	}
+
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void QCube::setShaderProgram(QShaderProgram* shaderProgram) {
@@ -85,4 +92,12 @@ void QCube::setShaderProgram(QShaderProgram* shaderProgram) {
 
 QShaderProgram* QCube::getShaderProgram() {
 	return shaderProgram;
+}
+
+void QCube::setTexture(QTexture* texture) {
+	this->texture = texture;
+}
+
+QTexture* QCube::getTexture() {
+	return texture;
 }

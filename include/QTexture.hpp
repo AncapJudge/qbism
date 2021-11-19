@@ -6,6 +6,6 @@ protected:
 	QTexture();
 public:
 	~QTexture();
-	static bool load(const char* filename);
+	static QTexture* load(const char* filename);
 	unsigned int getId();
 };
