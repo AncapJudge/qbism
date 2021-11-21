@@ -38,9 +38,9 @@ void* QCamera::getMatrix() {
 	__vector_cache2__.w = 1.0f;
 	
 	__matrix_cache__ = glm::perspective(
-		glm::radians(90.0f),
+		glm::radians(70.0f),
 		16.0f / 9.0f,
-		0.1f,
+		1.0f,
 		1000.0f
 	);
 
@@ -54,46 +54,5 @@ void* QCamera::getMatrix() {
 }
 
 void QCamera::update() {
-	QEvent* ev = QEvent::getInstance();
-
-	int deltaX, deltaY;
-	ev->getMouseDelta(&deltaX, &deltaY);
-	turn((float)deltaY / 10, (float)deltaX / 10);
-
 	
-	if (ev->mouseHit(2)) {
-		QVector3 p = getPosition();
-		std::cout << p.x << " " << p.y << " " << p.z << "\n";
-	}
-	const bool ALLOW_VERT = true;
-	if(ev->keyDown(25)) {
-		move(QVector3(
-			0.0f,
-			0.0f,
-			-0.1f
-		), ALLOW_VERT);
-	}
-	
-	if(ev->keyDown(39)) {
-		move(QVector3(
-			0.0f,
-			0.0f,
-			0.1f
-		), ALLOW_VERT);
-	}
-	if(ev->keyDown(38)) {
-		move(QVector3(
-			-0.1f,
-			0.0f,
-			0.0f
-		), ALLOW_VERT);
-	}
-	
-	if(ev->keyDown(40)) {
-		move(QVector3(
-			0.1f,
-			0.0f,
-			0.0f
-		), ALLOW_VERT);
-	}
 }

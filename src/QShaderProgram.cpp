@@ -16,7 +16,6 @@ QShaderProgram* QShaderProgram::load(const char* vshFile, const char* fshFile) {
 	std::string vertexShaderSource = QFile::readToString(vshFile);
 	const GLchar* vShaderCode = vertexShaderSource.c_str();
 	glShaderSource(vertexShader, 1, &vShaderCode, NULL);
-	std::cout<<"test\n";
 
 	glCompileShader(vertexShader);
 

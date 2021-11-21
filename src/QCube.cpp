@@ -38,7 +38,7 @@ QCube::QCube() {
 		 1.0f,  1.0f,  1.0f,	 0.0f,  1.0f,  0.0f,	0.5f,  0.25f,
 		0.0f,  1.0f,  1.0f, 	 0.0f,  1.0f,  0.0f,	0.25f, 0.25f
     };
-    GLuint indices[] = {  // Note that we start from 0!
+    GLuint indices[] = {
          0,  1,  2,   0,  2,  3,
 		 4,  5,  6,   4,  6,  7,
 		 8,  9, 10,   8, 10, 11,

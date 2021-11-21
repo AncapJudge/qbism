@@ -35,14 +35,14 @@ void QEvent::init() {
 void QEvent::keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	QEvent* instance = QEvent::getInstance();
 	if (action == GLFW_PRESS) {
-		instance->keyState[scancode] = true;
+		instance->keyState[key] = true;
 	}
 	else if (action == GLFW_RELEASE) {
-		instance->keyState[scancode] = false;
+		instance->keyState[key] = false;
 	}
 
 	if (action == GLFW_PRESS) {
-		instance->keyHits[scancode]++;
+		instance->keyHits[key]++;
 	}
 }
 
@@ -75,13 +75,13 @@ void QEvent::mouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
 	}
 }
 
-bool QEvent::keyDown(unsigned char scancode) {
-	return keyState[scancode];
+bool QEvent::keyDown(unsigned short key) {
+	return keyState[key];
 }
 
-unsigned int QEvent::keyHit(unsigned char scancode) {
-	unsigned int hits = keyHits[scancode];
-	keyHits[scancode] = 0;
+unsigned int QEvent::keyHit(unsigned short key) {
+	unsigned int hits = keyHits[key];
+	keyHits[key] = 0;
 	return hits;
 }
 

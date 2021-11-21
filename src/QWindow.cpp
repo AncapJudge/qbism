@@ -49,8 +49,9 @@ bool QWindow::open(unsigned int width, unsigned int height, const char* title) {
 	}
 
 	glViewport(0, 0, width, height);
-	glEnable(GL_CULL_FACE); 
-	glCullFace(GL_FRONT);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
 	return true;
 }
 
@@ -76,7 +77,7 @@ void QWindow::setClearColor(QColor color) {
 }
 
 void QWindow::clear() {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 GLFWwindow* QWindow::getGLFWwindow() {
