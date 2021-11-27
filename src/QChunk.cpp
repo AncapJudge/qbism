@@ -1,11 +1,11 @@
 #include <QChunk.hpp>
 #include <QChunkMesh.hpp>
 
-QChunk::QChunk() {
+QChunk::QChunk(int x, int z): x(x), z(z) {
 	mesh = new QChunkMesh();
 }
 
-void QChunk::initBlocksData(unsigned int x, unsigned int z) {
+void QChunk::initBlocksData() {
 	for (int x = 0; x < CHUNK_WIDTH; x++) {
 		for (int y = 0; y < CHUNK_HEIGHT; y++) {
 			for (int z = 0; z < CHUNK_LENGTH; z++) {
@@ -26,4 +26,9 @@ void QChunk::updateMesh() {
 
 QChunkMesh* QChunk::getMesh() {
 	return mesh;
+}
+
+void QChunk::setBlock(unsigned int x, unsigned int y, unsigned int z, unsigned int id) {
+	blocksData[x][y][z] = id;
+	updateMesh();
 }

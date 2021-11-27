@@ -40,8 +40,8 @@ void* QCamera::getMatrix() {
 	__matrix_cache__ = glm::perspective(
 		glm::radians(70.0f),
 		16.0f / 9.0f,
-		1.0f,
-		1000.0f
+		0.1f,
+		300.0f
 	);
 
 	__matrix_cache__ *= glm::lookAt(

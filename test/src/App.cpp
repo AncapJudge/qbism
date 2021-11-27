@@ -19,20 +19,31 @@ int App::run() {
 		return -1;
 	}
 	QCamera* camera = new QCamera();
-	QChunk* chunk = new QChunk();
-	chunk->initBlocksData(0, 0);
-	chunk->updateMesh();
-	QChunkMesh* chunkMesh = chunk->getMesh();
-	
+	QChunk* chunks[4][4];
 	
 	QShaderProgram* shaderProgram = QShaderProgram::load("./assets/shader.glslv", "./assets/shader.glslf");
-	chunkMesh->setShaderProgram(shaderProgram);
+	QTexture* texture = QTexture::load("./assets/grass.png");
+	
+	int bl = 69;
 
-	QTexture* texture = QTexture::load("./assets/tex.png");
-	chunkMesh->setTexture(texture);
+	for (int x = 0; x < 4; x++) {
+		for (int z = 0; z < 4; z++) {
+			chunks[x][z] = new QChunk(x, z);
+			chunks[x][z]->initBlocksData();
+			chunks[x][z]->updateMesh();
+			QChunkMesh* chunkMesh = chunks[x][z]->getMesh();
+			chunkMesh->setShaderProgram(shaderProgram);
+			chunkMesh->setTexture(texture);
+		}
+	}
+	
+	
 	
 	QEvent* ev_in = QEvent::getInstance();
 	ev_in->lockMouse();
+
+	camera->setPosition(QVector3(8, 70, 2));
+	camera->setRotation(0.0f, 180.0f);
 	do {
 		
 		if (ev_in->mouseHit(0)) {
@@ -49,6 +60,10 @@ int App::run() {
 			camera->turn((float)deltaY / 10, (float)deltaX / 10);
 		}
 		
+		if(ev_in->keyHit(KEY::F)) {
+			if (bl >= 0) 
+				chunks[0][0]->setBlock(1, bl--, 1, 0);
+		}
 		
 		const bool ALLOW_VERT = false;
 		if(ev_in->keyDown(KEY::W)) {
@@ -101,7 +116,11 @@ int App::run() {
 		shaderProgram->uniformMatrix("matrix", camera->getMatrix());
 		window->clear();
 		ev_in->pollEvents();
-		chunkMesh->draw();
+		for (int x = 0; x < 4; x++) {
+			for (int z = 0; z < 4; z++) {
+				chunks[x][z]->getMesh()->draw();
+			}
+		}
 		window->swapBuffers();
 	} while(window->isOpen());
 
